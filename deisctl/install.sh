@@ -4,8 +4,13 @@
 VERSION=${1:-1.10.0}
 
 # allow for an optional install location
-if [ ! -z "$2" ] && [ -d "$2" ]; then
-    INSTALLER_OPTS="--target $2"
+if [ ! -z "$2" ]; then
+    if [ ! -d "$2" ]; then
+        echo "Target directory $2 does not exist."
+        exit 1
+    else
+        INSTALLER_OPTS="--target $2"
+    fi
 fi
 
 # try to detect Linux distribution family
