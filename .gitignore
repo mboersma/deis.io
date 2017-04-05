@@ -1,3 +1,4 @@
 env/
 _bundle/
-_site/
+rootfs/_build/
+.bundle/

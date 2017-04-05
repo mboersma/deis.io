@@ -7,8 +7,13 @@ DEV_REGISTRY ?= quay.io
 DEIS_REGISTRY ?= ${DEV_REGISTRY}/
 IMAGE := ${DEIS_REGISTRY}${IMAGE_PREFIX}/${SHORT_NAME}:${VERSION}
 
-DOCKER_RUN_CMD := docker run -v $(CURDIR):$(CONTAINER_ROOT) --env-file=$(CONTAINER_ENV) --rm $(IMAGE)
-DOCKER_SHELL_CMD := docker run -v $(CURDIR):$(CONTAINER_ROOT) --env-file=$(CONTAINER_ENV) --rm -it $(IMAGE)
+DOCKER_RUN_CMD := docker run -v $(CURDIR):$(CONTAINER_ROOT) --rm $(IMAGE)
+DOCKER_SHELL_CMD := docker run -v $(CURDIR):$(CONTAINER_ROOT) --rm -it $(IMAGE)
+
+DEISIO_SHORT_NAME ?= deisio
+DEISIO_VERSION ?= 0.1.0
+DEISIO_IMAGE_PREFIX ?= deis
+DEISIO_IMAGE := ${DEIS_REGISTRY}${DEISIO_IMAGE_PREFIX}/${DEISIO_SHORT_NAME}:${DEISIO_VERSION}
 
 prep:
 	$(DOCKER_RUN_CMD) $(CONTAINER_ROOT)/script/prep
@@ -18,6 +23,13 @@ test: prep
 
 build:
 	$(DOCKER_RUN_CMD) $(CONTAINER_ROOT)/script/build
+	mv _site rootfs/_build
+
+build-image:
+	docker build \
+	  --pull \
+	  --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` \
+	  -t ${DEISIO_IMAGE} rootfs
 
 deploy:
 	$(DOCKER_RUN_CMD) $(CONTAINER_ROOT)/script/deploy
