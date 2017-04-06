@@ -23,7 +23,7 @@ test: prep
 
 build:
 	$(DOCKER_RUN_CMD) $(CONTAINER_ROOT)/script/build
-	mv _site rootfs/_build
+	mv _site rootfs/svc
 
 build-image:
 	docker build \
@@ -31,8 +31,8 @@ build-image:
 	  --build-arg BUILD_DATE=`date -u +'%Y-%m-%dT%H:%M:%SZ'` \
 	  -t ${DEISIO_IMAGE} rootfs
 
-deploy:
-	$(DOCKER_RUN_CMD) $(CONTAINER_ROOT)/script/deploy
+push:
+	docker push ${DEISIO_IMAGE}
 
 shell:
 	$(DOCKER_SHELL_CMD) /bin/bash

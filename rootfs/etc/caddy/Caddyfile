@@ -1,0 +1,13 @@
+:2015 {
+  root /svc
+  gzip {
+    not /healthz /assets/img
+  }
+  minify /assets/css
+  minify /assets/js
+  tls off
+  status 200 /healthz
+  errors {
+    404 404.html
+  }
+}
