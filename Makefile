@@ -23,7 +23,7 @@ test: prep
 
 build:
 	$(DOCKER_RUN_CMD) $(CONTAINER_ROOT)/script/build
-	mv _site rootfs/svc
+	rm -rf rootfs/svc && mv _site rootfs/svc
 
 build-image:
 	docker build \
