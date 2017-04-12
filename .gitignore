@@ -1,3 +1,4 @@
 env/
 _bundle/
-_site/
+rootfs/svc/
+.bundle/
